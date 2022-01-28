@@ -8,6 +8,18 @@ export const clickHelloAction = (value) => (
     }
 );
 
+export const clickCounterMoreAction = (value) => (
+    {
+        type: 'INCREMENT'
+    }
+);
+
+export const clickCounterLessAction = (value) => (
+    {
+        type: 'DECREMENT'
+    }
+);
+
 // Reducers ///////////////////////////////////////////////////////////////////////
 const clickReducer = (state = {msg: 'Redux'}, action) => {
     switch(action.type) {
