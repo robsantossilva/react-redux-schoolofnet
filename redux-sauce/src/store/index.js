@@ -1,4 +1,13 @@
-import { createStore } from "redux";
-import reducers from "./reducers";
+import { combineReducers } from 'redux';
+import configureStore from './CreateStore';
+import { CounterReducer } from './CounterAction';
 
-export default createStore(reducers);
+const Store = () => {
+    const rootReducer = combineReducers({
+        CounterReducer
+    });
+
+    return configureStore(rootReducer);
+}
+
+export default Store;
