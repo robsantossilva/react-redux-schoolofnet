@@ -1,9 +1,12 @@
 import { Field, reduxForm } from 'redux-form';
 
 const InitForm = (props) => {
+
+  const { onClick, onChangeName } = props;
+
   return (
     <form>
-        <div className="form-group">
+        <div className="mb-3">
             <label htmlFor="name">Enter your name:</label>
             <Field
                 name="name"
@@ -12,11 +15,11 @@ const InitForm = (props) => {
                 component="input"
                 //component={renderField}
                 className="form-control"
-                //onChange={onChangeName}
+                onChange={onChangeName}
             />
         </div>
-        <div className="form-group">
-            <button type="button" className="btn btn-primary" onClick={(e) => {}}>Send</button>
+        <div className="mb-3">
+            <button type="button" className="btn btn-primary" onClick={onClick}>Send</button>
         </div>
     </form>
   );

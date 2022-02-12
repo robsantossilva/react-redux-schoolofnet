@@ -9,7 +9,12 @@ import Store from './store';
 ReactDOM.render(
   <Provider store={Store()}>
     <React.StrictMode>
-      <App />
+      <div className="container">
+        <div className="row">
+          <App />
+        </div>
+      </div>
+      
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')
