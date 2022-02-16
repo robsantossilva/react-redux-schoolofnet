@@ -1,8 +1,15 @@
+import { useEffect } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { getInitialFetch } from '../store/actions';
 
 const InitForm = (props) => {
 
-  const { onClick, onChangeName } = props;
+  const { onClick, onChangeName, fetchInitial } = props;
+
+  useEffect(() => {
+    fetchInitial();
+  });
 
   return (
     <form>
@@ -25,6 +32,24 @@ const InitForm = (props) => {
   );
 }
 
-export default reduxForm({
-  form: 'initForm'
-})(InitForm);
+const mapStateToProps = (state) => {
+  return {
+    initialValues: state.name.data
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchInitial: () => dispatch(getInitialFetch())
+  }
+}
+
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  reduxForm({
+    form: 'InitForm',
+    enableReinitialize: true
+  })(InitForm)
+);
