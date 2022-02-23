@@ -3,14 +3,23 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { getInitialFetch } from '../store/actions';
 
-const validate = (values) => {
+const globalWarn = (values) => {
+  const warnings = {};
+  const { name } = values;
+
+  if (name && name.toString().length <= 2) {
+    warnings.name = 'To Short';
+  }
+
+  return warnings;
+}
+
+const globalValidate = (values) => {
   const errors = {};
   const { name } = values;
 
   if(!name) {
     errors.name = 'Required';
-  }else if (name.toString().length <= 2) {
-    errors.name = 'To Short';
   }
 
   return errors;
@@ -22,25 +31,35 @@ const renderField = (params) => {
     input,
     placeholder,
     type,
-    meta: {touched, error}
+    meta: {touched, error, warning}
   } = params;
-
-  console.log(params);
 
   return (<div className="form-group">
     <label htmlFor="">{placeholder}</label>
     <input {...input} type={type} placeholder={placeholder} className="form-control"/>
-    {touched && (error && <span className='text-danger'>{error}</span>)}
+    {touched 
+      && (
+        (error && <span className='text-danger'>{error}</span>) 
+        || (warning && <span className='text-warning'>{warning}</span>) 
+      )}
   </div>);
 };
 
 const InitForm = (props) => {
 
-  const { onClick, onChangeName, fetchInitial } = props;
+  const { onClick, onChangeName, fetchInitial, initialValues } = props;
 
   useEffect(() => {
     fetchInitial();
-  });
+  },[]);
+
+  function required(params){
+    console.log('required', params);
+  }
+
+  function toShort(params){
+    console.log('toShort', params);
+  }
 
   return (
     <form>
@@ -52,10 +71,11 @@ const InitForm = (props) => {
                 component={renderField}
                 className="form-control"
                 onChange={onChangeName}
+                //validate={[ required, toShort ]}
             />
         </div>
         <div className="mb-3">
-            <button type="button" className="btn btn-primary" onClick={onClick}>Send</button>
+            <button type="button" className="btn btn-primary" onClick={(e) => onClick(e, initialValues)}>Send</button>
         </div>
     </form>
   );
@@ -80,6 +100,7 @@ export default connect(
   reduxForm({
     form: 'InitForm',
     enableReinitialize: true,
-    validate
+    validate:globalValidate,
+    warn: globalWarn
   })(InitForm)
 );

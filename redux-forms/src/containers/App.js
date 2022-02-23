@@ -1,10 +1,14 @@
+import { connect } from 'react-redux';
 import InitForm from '../components/InitForm';
+import { getInitialFetch, sendServer } from '../store/actions';
 
-function App() {
+function App(props) {
 
-  function onClick(e) {
+  const { createName } = props;
+
+  function onClick(e, data) {
     e.preventDefault();
-    console.log('Clicked in Redux Form');
+    createName(data);
   }
 
   function onChangeName(e) {
@@ -33,4 +37,17 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    initialValues: state.name.data
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchInitial: () => dispatch(getInitialFetch()),
+    createName: async (data) => dispatch(await sendServer(data))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
