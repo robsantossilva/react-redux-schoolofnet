@@ -10,7 +10,6 @@ export function isFetching(state = false, action){
     }
 }
 
-// Action Creator
 export function fetchedError(state = {}, action){
     switch (action.type) {
         case FETCHED_ERROR:
